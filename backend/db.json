@@ -1,0 +1,92 @@
+{
+  "users": [
+    {
+      "id": "1",
+      "email": "admin@example.com",
+      "role": "admin"
+    },
+    {
+      "id": "2",
+      "email": "user@example.com",
+      "role": "user"
+    }
+  ],
+  "scooters": [
+    {
+      "id": "1",
+      "position": [-18.9152, 47.5265],
+      "status": "available",
+      "batery": "80%"
+    },
+    {
+      "id": "2",
+      "position": [-18.9163, 47.5339],
+      "status": "available",
+      "batery": "80%"
+    },
+    {
+      "id": "3",
+      "position": [-18.9153, 47.5235],
+      "status": "available",
+      "batery": "80%"
+    },
+    {
+      "id": "4",
+      "position": [-18.9147, 47.528],
+      "status": "available",
+      "batery": "80%"
+    },
+    {
+      "id": "5",
+      "position": [-18.9171, 47.5293],
+      "status": "reserved",
+      "batery": "80%"
+    },
+    {
+      "id": "6",
+      "position": [-18.9182, 47.5257],
+      "status": "available",
+      "batery": "80%"
+    },
+    {
+      "id": "7",
+      "position": [-18.9169, 47.5276],
+      "status": "reserved",
+      "batery": "80%"
+    },
+    {
+      "id": "8",
+      "position": [-18.9144, 47.5302],
+      "status": "available",
+      "batery": "80%"
+    },
+    {
+      "id": "9",
+      "position": [-18.9158, 47.5321],
+      "status": "available",
+      "batery": "80%"
+    },
+    {
+      "id": "10",
+      "position": [-18.9175, 47.5315],
+      "status": "available",
+      "batery": "80%"
+    }
+  ],
+  "reservations": [
+    {
+      "id": "f9d7",
+      "scooterId": "7",
+      "userEmail": "user@mail.com",
+      "status": "non-payer",
+      "startTime": "2025-05-07T14:16:00.452Z"
+    },
+    {
+      "id": "702b",
+      "scooterId": "5",
+      "userEmail": "user@mail.com",
+      "status": "non-payer",
+      "startTime": "2025-05-07T14:16:10.021Z"
+    }
+  ]
+}
