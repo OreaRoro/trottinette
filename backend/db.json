@@ -14,79 +14,116 @@
   "scooters": [
     {
       "id": "1",
-      "position": [-18.9152, 47.5265],
-      "status": "available",
+      "position": [
+        -18.9152,
+        47.5265
+      ],
+      "status": "reserved",
       "batery": "80%"
     },
     {
       "id": "2",
-      "position": [-18.9163, 47.5339],
+      "position": [
+        -18.9163,
+        47.5339
+      ],
       "status": "available",
       "batery": "80%"
     },
     {
       "id": "3",
-      "position": [-18.9153, 47.5235],
+      "position": [
+        -18.9153,
+        47.5235
+      ],
       "status": "available",
       "batery": "80%"
     },
     {
       "id": "4",
-      "position": [-18.9147, 47.528],
-      "status": "available",
-      "batery": "80%"
-    },
-    {
-      "id": "5",
-      "position": [-18.9171, 47.5293],
+      "position": [
+        -18.9147,
+        47.528
+      ],
       "status": "reserved",
       "batery": "80%"
     },
     {
+      "id": "5",
+      "position": [
+        -18.9171,
+        47.5293
+      ],
+      "status": "available",
+      "batery": "80%"
+    },
+    {
       "id": "6",
-      "position": [-18.9182, 47.5257],
+      "position": [
+        -18.9182,
+        47.5257
+      ],
       "status": "available",
       "batery": "80%"
     },
     {
       "id": "7",
-      "position": [-18.9169, 47.5276],
+      "position": [
+        -18.9169,
+        47.5276
+      ],
       "status": "reserved",
       "batery": "80%"
     },
     {
       "id": "8",
-      "position": [-18.9144, 47.5302],
+      "position": [
+        -18.9144,
+        47.5302
+      ],
       "status": "available",
       "batery": "80%"
     },
     {
       "id": "9",
-      "position": [-18.9158, 47.5321],
+      "position": [
+        -18.9158,
+        47.5321
+      ],
       "status": "available",
       "batery": "80%"
     },
     {
       "id": "10",
-      "position": [-18.9175, 47.5315],
+      "position": [
+        -18.9175,
+        47.5315
+      ],
       "status": "available",
       "batery": "80%"
     }
   ],
   "reservations": [
     {
-      "id": "f9d7",
+      "id": "cd0e",
       "scooterId": "7",
       "userEmail": "user@mail.com",
       "status": "non-payer",
-      "startTime": "2025-05-07T14:16:00.452Z"
+      "startTime": "2025-05-08T06:41:06.064Z"
     },
     {
-      "id": "702b",
-      "scooterId": "5",
+      "id": "9d02",
+      "scooterId": "1",
       "userEmail": "user@mail.com",
       "status": "non-payer",
-      "startTime": "2025-05-07T14:16:10.021Z"
+      "startTime": "2025-05-08T06:47:02.918Z"
+    },
+    {
+      "id": "847d",
+      "scooterId": "4",
+      "userEmail": "user@mail.com",
+      "status": "non-payer",
+      "startTime": "2025-05-08T07:10:24.353Z"
     }
   ]
 }

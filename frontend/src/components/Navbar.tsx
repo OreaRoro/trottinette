@@ -30,9 +30,6 @@ const Navbar: React.FC = () => {
               <Link to="/" className="hover:underline">
                 Voir le site
               </Link>
-              <Link to="/resrvation" className="hover:underline">
-                Résérvation
-              </Link>
               <Link to="/admin" className="hover:underline">
                 Administration
               </Link>
@@ -78,9 +75,6 @@ const Navbar: React.FC = () => {
                 <>
                   <Link to="/" onClick={() => setMenuOpen(false)}>
                     Voir le site
-                  </Link>
-                  <Link to="/resrvation" onClick={() => setMenuOpen(false)}>
-                    Résérvation
                   </Link>
                   <Link to="/admin" onClick={() => setMenuOpen(false)}>
                     Administration

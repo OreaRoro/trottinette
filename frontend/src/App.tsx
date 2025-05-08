@@ -33,7 +33,7 @@ function App() {
             </ProtectedRoute>
           }
         />
-        <Route path="/success" element={<PaymentSuccess />} />
+        <Route path="/payment-success" element={<PaymentSuccess />} />
         <Route
           path="/admin"
           element={

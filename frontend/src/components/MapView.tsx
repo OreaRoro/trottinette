@@ -34,6 +34,23 @@ const MapView: React.FC = () => {
   const [scooters, setScooters] = useState<Scooter[]>([]);
   const [selectedScooter, setSelectedScooter] = useState<Scooter | null>(null);
 
+  const randomizeScooterPositions = (
+    scooters: Scooter[],
+    userLocation: LatLngExpression
+  ): Scooter[] => {
+    return scooters.map((scooter) => {
+      const offsetLat = (Math.random() - 0.5) * 0.02;
+      const offsetLng = (Math.random() - 0.5) * 0.02;
+      return {
+        ...scooter,
+        position: [
+          (userLocation[0] as number) + offsetLat,
+          (userLocation[1] as number) + offsetLng,
+        ],
+      };
+    });
+  };
+
   useEffect(() => {
     navigator.geolocation.getCurrentPosition((position) => {
       const userLocation: LatLngExpression = [
@@ -46,19 +63,17 @@ const MapView: React.FC = () => {
         .then((res) => res.json())
         .then((data) => {
           // Pour chaque trottinette, on déplace légèrement sa position autour de l'utilisateur
-          const randomized = data.map((scooter: Scooter) => {
-            const offsetLat = (Math.random() - 0.5) * 0.01;
-            const offsetLng = (Math.random() - 0.5) * 0.01;
-            return {
-              ...scooter,
-              position: [
-                (userLocation[0] as number) + offsetLat,
-                (userLocation[1] as number) + offsetLng,
-              ],
-            };
+          const randomized = randomizeScooterPositions(data, userLocation);
+          setScooters([]);
+          randomized.forEach((scooter, i) => {
+            setTimeout(() => {
+              setScooters((prev) => {
+                // On évite les doublons
+                if (prev.some((s) => s.id === scooter.id)) return prev;
+                return [...prev, scooter];
+              });
+            }, i * 100);
           });
-
-          setScooters(randomized);
         });
     });
   }, []);
@@ -76,7 +91,7 @@ const MapView: React.FC = () => {
       body: JSON.stringify({
         scooterId: selectedScooter.id,
         userEmail,
-        status: "active",
+        status: "non-payer",
         startTime: new Date().toISOString(),
       }),
     });
@@ -96,7 +111,21 @@ const MapView: React.FC = () => {
     const updated = await fetch("http://localhost:3000/scooters").then((res) =>
       res.json()
     );
-    setScooters(updated);
+    if (userPos) {
+      const randomized = randomizeScooterPositions(updated, userPos);
+      setScooters([]);
+      randomized.forEach((scooter, i) => {
+        setTimeout(() => {
+          setScooters((prev) => {
+            // On évite les doublons
+            if (prev.some((s) => s.id === scooter.id)) return prev;
+            return [...prev, scooter];
+          });
+        }, i * 100);
+      });
+    } else {
+      setScooters(updated);
+    }
   };
 
   if (!userPos)
@@ -107,7 +136,7 @@ const MapView: React.FC = () => {
       <MapContainer
         center={userPos}
         zoom={15}
-        className="w-full h-full"
+        className="w-full h-full animate-fade-in"
         scrollWheelZoom
       >
         <TileLayer
@@ -119,7 +148,7 @@ const MapView: React.FC = () => {
         </Marker>
 
         {scooters
-          .filter((scooter) => scooter.status !== "reserved")
+          .filter((scooter) => scooter.status === "available")
           .map((scooter) => (
             <Marker
               key={scooter.id}
