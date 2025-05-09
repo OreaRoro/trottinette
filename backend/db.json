@@ -18,7 +18,7 @@
         -18.9152,
         47.5265
       ],
-      "status": "reserved",
+      "status": "available",
       "batery": "80%"
     },
     {
@@ -45,7 +45,7 @@
         -18.9147,
         47.528
       ],
-      "status": "reserved",
+      "status": "available",
       "batery": "80%"
     },
     {
@@ -110,20 +110,6 @@
       "userEmail": "user@mail.com",
       "status": "non-payer",
       "startTime": "2025-05-08T06:41:06.064Z"
-    },
-    {
-      "id": "9d02",
-      "scooterId": "1",
-      "userEmail": "user@mail.com",
-      "status": "non-payer",
-      "startTime": "2025-05-08T06:47:02.918Z"
-    },
-    {
-      "id": "847d",
-      "scooterId": "4",
-      "userEmail": "user@mail.com",
-      "status": "non-payer",
-      "startTime": "2025-05-08T07:10:24.353Z"
     }
   ]
 }

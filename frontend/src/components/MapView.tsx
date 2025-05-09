@@ -1,7 +1,7 @@
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import { type LatLngExpression } from "leaflet";
 import "leaflet/dist/leaflet.css";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import L from "leaflet";
 import markerIcon2x from "leaflet/dist/images/marker-icon-2x.png";
 import markerIcon from "leaflet/dist/images/marker-icon.png";
@@ -33,6 +33,7 @@ const MapView: React.FC = () => {
   const [userPos, setUserPos] = useState<LatLngExpression | null>(null);
   const [scooters, setScooters] = useState<Scooter[]>([]);
   const [selectedScooter, setSelectedScooter] = useState<Scooter | null>(null);
+  const scooterPositions = useRef<Map<number, LatLngExpression>>(new Map());
 
   const randomizeScooterPositions = (
     scooters: Scooter[],
@@ -61,13 +62,26 @@ const MapView: React.FC = () => {
       fetch("http://localhost:3000/scooters")
         .then((res) => res.json())
         .then((data) => {
-          // Pour chaque trottinette, on déplace légèrement sa position autour de l'utilisateur
-          const randomized = randomizeScooterPositions(data, userLocation);
+          const randomized = data.map((scooter: { id: number }) => {
+            let pos = scooterPositions.current.get(scooter.id);
+
+            if (!pos && userLocation) {
+              const offsetLat = (Math.random() - 0.5) * 0.02;
+              const offsetLng = (Math.random() - 0.5) * 0.02;
+              pos = [
+                (userLocation[0] as number) + offsetLat,
+                (userLocation[1] as number) + offsetLng,
+              ];
+              scooterPositions.current.set(scooter.id, pos);
+            }
+
+            return { ...scooter, position: pos ?? [0, 0] };
+          });
+
           setScooters([]);
-          randomized.forEach((scooter, i) => {
+          randomized.forEach((scooter: Scooter, i: number) => {
             setTimeout(() => {
               setScooters((prev) => {
-                // On évite les doublons
                 if (prev.some((s) => s.id === scooter.id)) return prev;
                 return [...prev, scooter];
               });
@@ -83,7 +97,6 @@ const MapView: React.FC = () => {
     const userEmail = localStorage.getItem("userEmail");
     if (!userEmail) return alert("Vous devez être connecté");
 
-    // Ajouter la réservation
     await fetch("http://localhost:3000/reservations", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -95,36 +108,34 @@ const MapView: React.FC = () => {
       }),
     });
 
-    // Mettre à jour la trottinette pour marquer son statut comme réservé
     await fetch(`http://localhost:3000/scooters/${selectedScooter.id}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ status: "reserved" }),
     });
 
-    // alert(`Trottinette #${selectedScooter.id} réservée !`);
     toast(`Trottinette #${selectedScooter.id} réservée avec succès!`);
     setSelectedScooter(null);
 
-    // Recharger les trottinettes mises à jour
     const updated = await fetch("http://localhost:3000/scooters").then((res) =>
       res.json()
     );
-    if (userPos) {
-      const randomized = randomizeScooterPositions(updated, userPos);
-      setScooters([]);
-      randomized.forEach((scooter, i) => {
-        setTimeout(() => {
-          setScooters((prev) => {
-            // On évite les doublons
-            if (prev.some((s) => s.id === scooter.id)) return prev;
-            return [...prev, scooter];
-          });
-        }, i * 100);
-      });
-    } else {
-      setScooters(updated);
-    }
+
+    const scootersWithOldPositions = updated.map((scooter: { id: number }) => {
+      let pos = scooterPositions.current.get(scooter.id);
+
+      if (!pos && userPos) {
+        const [lat, lng] = userPos as [number, number];
+        const offsetLat = (Math.random() - 0.5) * 0.02;
+        const offsetLng = (Math.random() - 0.5) * 0.02;
+        pos = [lat + offsetLat, lng + offsetLng];
+        scooterPositions.current.set(scooter.id, pos);
+      }
+
+      return { ...scooter, position: pos ?? [0, 0] };
+    });
+
+    setScooters(scootersWithOldPositions);
   };
 
   if (!userPos)
