@@ -38,15 +38,14 @@ const MapView: React.FC = () => {
     scooters: Scooter[],
     userLocation: LatLngExpression
   ): Scooter[] => {
+    const [lat, lng] = userLocation as [number, number];
+
     return scooters.map((scooter) => {
       const offsetLat = (Math.random() - 0.5) * 0.02;
       const offsetLng = (Math.random() - 0.5) * 0.02;
       return {
         ...scooter,
-        position: [
-          (userLocation[0] as number) + offsetLat,
-          (userLocation[1] as number) + offsetLng,
-        ],
+        position: [lat + offsetLat, lng + offsetLng],
       };
     });
   };
