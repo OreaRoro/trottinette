@@ -52,43 +52,54 @@ const MapView: React.FC = () => {
   };
 
   useEffect(() => {
-    navigator.geolocation.getCurrentPosition((position) => {
-      const userLocation: LatLngExpression = [
-        position.coords.latitude,
-        position.coords.longitude,
-      ];
-      setUserPos(userLocation);
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const userLocation: LatLngExpression = [
+          position.coords.latitude,
+          position.coords.longitude,
+        ];
+        setUserPos(userLocation);
 
-      fetch("http://localhost:3000/scooters")
-        .then((res) => res.json())
-        .then((data) => {
-          const randomized = data.map((scooter: { id: number }) => {
-            let pos = scooterPositions.current.get(scooter.id);
+        fetch("http://localhost:3000/scooters")
+          .then((res) => res.json())
+          .then((data) => {
+            const randomized = data.map((scooter: { id: number }) => {
+              let pos = scooterPositions.current.get(scooter.id);
 
-            if (!pos && userLocation) {
-              const offsetLat = (Math.random() - 0.5) * 0.02;
-              const offsetLng = (Math.random() - 0.5) * 0.02;
-              pos = [
-                (userLocation[0] as number) + offsetLat,
-                (userLocation[1] as number) + offsetLng,
-              ];
-              scooterPositions.current.set(scooter.id, pos);
-            }
+              if (!pos && userLocation) {
+                const offsetLat = (Math.random() - 0.5) * 0.02;
+                const offsetLng = (Math.random() - 0.5) * 0.02;
+                pos = [
+                  (userLocation[0] as number) + offsetLat,
+                  (userLocation[1] as number) + offsetLng,
+                ];
+                scooterPositions.current.set(scooter.id, pos);
+              }
 
-            return { ...scooter, position: pos ?? [0, 0] };
+              return { ...scooter, position: pos ?? [0, 0] };
+            });
+
+            setScooters([]);
+            randomized.forEach((scooter: Scooter, i: number) => {
+              setTimeout(() => {
+                setScooters((prev) => {
+                  if (prev.some((s) => s.id === scooter.id)) return prev;
+                  return [...prev, scooter];
+                });
+              }, i * 100);
+            });
           });
-
-          setScooters([]);
-          randomized.forEach((scooter: Scooter, i: number) => {
-            setTimeout(() => {
-              setScooters((prev) => {
-                if (prev.some((s) => s.id === scooter.id)) return prev;
-                return [...prev, scooter];
-              });
-            }, i * 100);
-          });
-        });
-    });
+      },
+      (error) => {
+        console.error("Erreur de géolocalisation :", error.message);
+        alert("Impossible de récupérer votre position.");
+      },
+      {
+        enableHighAccuracy: true,
+        timeout: 10000,
+        maximumAge: 0,
+      }
+    );
   }, []);
 
   const handleReserve = async () => {

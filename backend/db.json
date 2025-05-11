@@ -72,7 +72,7 @@
         -18.9169,
         47.5276
       ],
-      "status": "reserved",
+      "status": "available",
       "batery": "80%"
     },
     {
@@ -99,17 +99,17 @@
         -18.9175,
         47.5315
       ],
-      "status": "available",
+      "status": "reserved",
       "batery": "80%"
     }
   ],
   "reservations": [
     {
-      "id": "cd0e",
-      "scooterId": "7",
+      "id": "f8b1",
+      "scooterId": "10",
       "userEmail": "user@mail.com",
       "status": "non-payer",
-      "startTime": "2025-05-08T06:41:06.064Z"
+      "startTime": "2025-05-09T05:50:55.555Z"
     }
   ]
 }
